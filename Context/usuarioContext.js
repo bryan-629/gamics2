@@ -16,6 +16,7 @@ export function UsuarioProvider(props) {
           
         }else{
           fetch(`https://codwz.000webhostapp.com/gamicsBack/search.php/?platform=${platform}&query=${userId}`, { method: 'GET' }).then((res) => res.json()).then((data) => { functionState(data) })
+          
         }
       }catch{
         
@@ -24,18 +25,22 @@ export function UsuarioProvider(props) {
     const playerStats = (platform, userId, setfunctionState) => { //Busca los stats de un usuario
       let dataTime = getWeekTime() 
       let user;
-      if (platform !="uno" || platform !="battle") {
-        user = userId;
-      }else{
+      if (platform == 'battle' || platform == 'uno' ) {
         user = parseUserAlmo(userId);
-      };
+      }else{
+        user = userId;
+      }
       
-      fetch(`https://codwz.000webhostapp.com/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`, { method: 'GET' }).then((res) => res.json()).then((data) => { setfunctionState(data) })
+      console.log(`http://192.168.1.33/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`);
+      fetch(`http://192.168.1.33/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`,{ method: 'GET' }).then((res) => res.json()).then((data) => { setfunctionState(data) })
     }
 
     const parseUserAlmo = (user) => {// parsea el usuario y cambia el # por %23
-      let name = user.split('#')
-      return name[0] + "%23" + name[1]
+      if (user.includes('#')) {
+        let name = user.split('#');
+        return name[0] + "%23" + name[1];
+      }
+      return user;
     }
   
     const getWeekTime = () =>{//Obtiene la fecha de la semana en sistema unix

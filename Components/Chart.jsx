@@ -18,7 +18,7 @@ export default function Chart() {
     50,
     55,
     63,
-   34,
+    34,
     35
 
   ];

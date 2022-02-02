@@ -6,7 +6,7 @@ import { color } from 'react-native/Libraries/Components/View/ReactNativeStyleAt
 
 
 
-export default function HeaderProfile() {
+export default function HeaderProfile({userData}) {
 
 
     const [fontLoaded, setFontLoaded] = useState(false);
@@ -32,7 +32,7 @@ export default function HeaderProfile() {
                     </View>
                     <View style={{}}>
                         <View style={{justifyContent:'center', flexDirection:'row', alignItems:'center'}}>
-                            <Text style={{ fontFamily: 'BebasNeue', color: 'white', fontSize: 20, justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>NYNE</Text>
+                            <Text style={{ fontFamily: 'BebasNeue', color: 'white', fontSize: 20, justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>{userData.data.userName}</Text>
                             <View style={{backgroundColor:'#00B4D8', height:20,width:20, borderRadius:5, marginLeft:5}}></View>
                         </View>
                         <View>
@@ -41,11 +41,11 @@ export default function HeaderProfile() {
                     </View>
                     <View style={{height:40, width:anchoToltaCols/2,flexDirection:'row', marginTop:20,justifyContent:'space-between' }}>
                         <View style={{width:windowWidthCol,justifyContent:'center',alignItems:'center',marginRight:5 }}>
-                            <Text style={{ fontFamily: 'BebasNeue', color: 'white', fontSize: 30, justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>1000</Text>
+                            <Text style={{ fontFamily: 'BebasNeue', color: 'white', fontSize: 30, justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>{userData.data.level}</Text>
                             <Text style={{ fontFamily: 'Mon', color: 'white', fontSize: 13, textAlign:'center'}}>Level</Text>
                         </View>
                         <View style={{width:windowWidthCol,justifyContent:'center',alignItems:'center',marginLeft:5}}>
-                            <Text style={{ fontFamily: 'BebasNeue', color: 'white', fontSize: 30, justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>27</Text>
+                            <Text style={{ fontFamily: 'BebasNeue', color: 'white', fontSize: 30, justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>{userData.data.prestige}</Text>
                             <Text style={{ fontFamily: 'Mon', color: 'white', fontSize: 13, textAlign:'center'}}>Prestige</Text>
                         </View>
                     </View>

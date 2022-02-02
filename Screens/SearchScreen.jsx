@@ -15,6 +15,7 @@ export default function SearchScreen({ navigation, route }) {
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState('');
+  const [platform, setPlatform] = useState('psn')
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -25,20 +26,31 @@ export default function SearchScreen({ navigation, route }) {
   };
   const userPressed = (user) => {
     setSearchUser(user);
+    setSearchPlatform(platform)
     navigation.navigate('Profile');
     setResult('');
     setInputValue('');
     console.log(user);
-  }
+  };
+
+  const handleSubmit = (user) => {
+    setSearchUser(user);
+    setSearchPlatform(platform);
+    navigation.navigate('Profile');
+    setResult('');
+    setInputValue('');
+    console.log(user);
+  };
 
 
   useEffect(() => {
     if (inputValue != '') {
       setLoading(true);
-      searchPlayer(searchPlatform, inputValue, setResult);
+      searchPlayer(platform, inputValue, setResult);
       setLoading(false);
+      
     };
-  }, [inputValue]);
+  }, [inputValue,platform]);
 
   useEffect(() => {
     loadFonts();
@@ -68,7 +80,7 @@ export default function SearchScreen({ navigation, route }) {
                       Introduce el usuario y su plataforma
                     </Text>
                     <View style={{ width: windowWidth, alignItems: 'center' }}>
-                      <PlatformBtn searchPlatform={searchPlatform} setSearchPlatform={setSearchPlatform} ></PlatformBtn>
+                      <PlatformBtn platform={platform} setPlatform={setPlatform} ></PlatformBtn>
                     </View>
                     <TextInput
                       onChangeText={(val) => setInputValue(val)}
@@ -89,7 +101,7 @@ export default function SearchScreen({ navigation, route }) {
                     />
 
 
-                    <TouchableOpacity onPress={() => { navigation.navigate('Error') }}>
+                    <TouchableOpacity onPress={() => { handleSubmit(inputValue) }}>
                       <View
                         style={{ padding: 10, width: anchoToltaCols, backgroundColor: '#00B4D8', borderRadius: 3, marginTop: 10 }}>
                         <Text style={{ textAlign: 'center', color: "#2D2D2A", fontSize: 25, fontFamily: 'BebasNeue' }}>SEARCH</Text>

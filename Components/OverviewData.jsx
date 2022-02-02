@@ -7,7 +7,7 @@ import ChartPie from './ChartPie';
 
 
 
-export default function OverviewData() {
+export default function OverviewData({userData}) {
     const [fontLoaded, setFontLoaded] = useState(false);
 
     const loadFonts = async () => {
@@ -28,24 +28,24 @@ export default function OverviewData() {
                 <View style={{ alignItems: 'center' }}>
                     <View style={{ marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ backgroundColor: '#00B4D8', height: 20, width: 20, borderRadius: 5, marginLeft: 5 }}></View>
-                        <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 30, textAlign: 'center', marginLeft: 10, marginRight: 20 }}>Diamond</Text>
+                        <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 30, textAlign: 'center', marginLeft: 10, marginRight: 20 }}>{userData.data.userDataBrCal.userLeague}</Text>
                     </View>
                     <View style={{ width: anchoToltaCols, marginTop: 20, justifyContent: 'space-between', flexDirection: 'row' }}>
                         <View style={{ width: windowWidthCol, justifyContent: 'center' }}>
-                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>1.50</Text>
+                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>{userData.data.userDataBrCal.kd}</Text>
                             <Text style={{ color: 'white', fontFamily: 'Mon', fontSize: 12, textAlign: 'center' }}>KD</Text>
                         </View>
                         <View style={{ width: windowWidthCol, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>1200</Text>
+                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>{userData.data.userDataBr.wins}</Text>
                             <Text style={{ color: 'white', fontFamily: 'Mon', fontSize: 12, textAlign: 'center' }}>Points/Min</Text>
                         </View>
                         <View style={{ width: windowWidthCol, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>2,49%</Text>
+                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>{userData.data.userDataBrCal.winsGame}</Text>
                             <Text style={{ color: 'white', fontFamily: 'Mon', fontSize: 12, textAlign: 'center' }}>%wins</Text>
                         </View>
                         <View style={{ width: windowWidthCol, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>80.000</Text>
-                            <Text style={{ color: 'white', fontFamily: 'Mon', fontSize: 12, textAlign: 'center' }}>Kills</Text>
+                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>{userData.data.userDataBrCal.killsPerGame}</Text>
+                            <Text style={{ color: 'white', fontFamily: 'Mon', fontSize: 12, textAlign: 'center' }}>Kills/Game</Text>
                         </View>
                     </View>
                     <View style={{ width: anchoToltaCols, justifyContent: 'flex-start', marginTop: 30, marginBottom:10 }}>
@@ -53,7 +53,7 @@ export default function OverviewData() {
                             <Text style={{ color: 'grey', fontFamily: 'BebasNeue', fontSize: 17 }}>WEEK CHART</Text>
                         </View>
                     </View>
-                    <Chart></Chart>
+                    <Chart userData={userData.data.periods}></Chart>
                     <View style={{ width: anchoToltaCols, justifyContent: 'flex-start'}}>
                         <View style={{ width: windowWidthCol }}>
                             <Text style={{ color: 'grey', fontFamily: 'BebasNeue', fontSize: 17 }}>WEEK KD</Text>

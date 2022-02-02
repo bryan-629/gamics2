@@ -6,14 +6,15 @@ import * as Font from 'expo-font';
 import OverviewData from '../Components/OverviewData';
 import MatchesData from '../Components/MatchesData';
 import StatsData from '../Components/StatsData';
-import { windowWidth, windowWidthCol, anchoToltaCols } from '../helpers/calcwWdth';
+import { windowWidth, windowWidthCol , anchoToltaCols } from '../helpers/calcwWdth';
 import { useUsuario } from '../Context/usuarioContext';
+import createPerformanceLogger from 'react-native/Libraries/Utilities/createPerformanceLogger';
 
 
 export default function ProfileScreen() {
   const [menu, setMenu] = useState(1);
   const [fontLoaded, setFontLoaded] = useState(false);
-  const [userData, setUserData] = useState();
+  const [userData, setUserData] = useState(null);
   const { searchPlatform, setSearchPlatform, searchPlayer, setSearchUser, searchUser, playerStats } = useUsuario();
   const [loading, setLoading] = useState(false);
 
@@ -28,11 +29,14 @@ export default function ProfileScreen() {
 
   useEffect(() => {
     loadFonts();
-    setLoading(true);
-    playerStats(searchPlatform, searchUser, setUserData);
-    setLoading(false);
-    console.log(userData);
+    if (!userData) {
+      console.log('se realiza petición')
+      playerStats(searchPlatform, searchUser, setUserData);
+    }
   }, []);
+  useEffect(() => {
+
+  }, [userData]);
 
   return (
 
@@ -40,13 +44,10 @@ export default function ProfileScreen() {
       <ScrollView>
 
 
-        {fontLoaded ? (
-
-          loading?(
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <ActivityIndicator size="large" color="#fff" />
-            </View>
-          ):(
+        {fontLoaded ? 
+        
+        userData != null ? 
+        (
             <>
             <HeaderProfile userData={userData} />
             <View style={{ width: windowWidth, justifyContent: 'center' }}>
@@ -84,15 +85,19 @@ export default function ProfileScreen() {
                   selected={menu}
                 />
               </View>
-              {menu == 1 ? (<OverviewData />) : null}
+              {menu == 1 ? (<OverviewData userData={userData}/>) : null}
               {menu == 2 ? (<MatchesData />) : null}
               {menu == 3 ? (<StatsData />) : null}
             </View>
           </>
+          ) : (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red', width:100}}>
+            <Text style={{ color: 'white' }}>Loading...</Text>
+          </View>
           )
-        
-        ) : (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#313638' }}>
+        : 
+        (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red' }}>
           <Text style={{ color: 'white' }}>Loading...</Text>
         </View>
         )}
