@@ -15,30 +15,27 @@ export function UsuarioProvider(props) {
         if (userId=='') {
           
         }else{
-          fetch(`https://codwz.000webhostapp.com/gamicsBack/search.php/?platform=${platform}&query=${userId}`, { method: 'GET' }).then((res) => res.json()).then((data) => { functionState(data) })
+          
+          //console.log(`https://codwz.000webhostapp.com/gamicsBack/search.php/?platform=${platform}&query=${parseUserAlmo(userId)}`);
+          fetch(`https://codwz.000webhostapp.com/gamicsBack/search.php/?platform=${platform}&query=${parseUserAlmo(userId)}`, { method: 'GET' }).then((res) => res.json()).then((data) => { functionState(data) })
           
         }
       }catch{
         
       };
     };
+
     const playerStats = (platform, userId, setfunctionState) => { //Busca los stats de un usuario
       let dataTime = getWeekTime() 
-      let user;
-      if (platform == 'battle' || platform == 'uno' ) {
-        user = parseUserAlmo(userId);
-      }else{
-        user = userId;
-      }
-      
-      console.log(`http://192.168.1.33/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`);
-      fetch(`http://192.168.1.33/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`,{ method: 'GET' }).then((res) => res.json()).then((data) => { setfunctionState(data) })
+      user = parseUserAlmo(userId);
+      //console.log(`https://codwz.000webhostapp.com/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`);
+      fetch(`https://codwz.000webhostapp.com/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`,{ method: 'GET' }).then((res) => res.json()).then((data) => { setfunctionState(data) })
     }
 
     const parseUserAlmo = (user) => {// parsea el usuario y cambia el # por %23
       if (user.includes('#')) {
-        let name = user.split('#');
-        return name[0] + "%23" + name[1];
+        let name = user.replace('#', '%23');
+        return name
       }
       return user;
     }

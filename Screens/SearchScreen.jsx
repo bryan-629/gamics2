@@ -14,7 +14,7 @@ export default function SearchScreen({ navigation, route }) {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState('');
+  const [result, setResult] = useState({});
   const [platform, setPlatform] = useState('psn')
 
   const loadFonts = async () => {
@@ -33,24 +33,45 @@ export default function SearchScreen({ navigation, route }) {
     console.log(user);
   };
 
+  useEffect(() => { //controlamos el feedback de carga.
+    if (inputValue != '') { //si hay valor en el input, se manda la peticiion, con lo cual, cargamos
+      if (!result.status) { // si no hay status, no hemos recibido respuesta, por lo que mostramos el spinner
+        setLoading(true);
+      }else{
+        setLoading(false);
+      };
+    };
+
+  }, [result]);
+
+
   const handleSubmit = (user) => {
     setSearchUser(user);
     setSearchPlatform(platform);
+    console.log(searchPlayer)
     navigation.navigate('Profile');
     setResult('');
     setInputValue('');
-    console.log(user);
   };
 
+  useEffect(() => {
+    if (inputValue != '') {
+      
+      searchPlayer(platform, inputValue, setResult);
+      setLoading(false);
+    };
+  }, [platform]);
 
   useEffect(() => {
     if (inputValue != '') {
       setLoading(true);
+      setResult({});
       searchPlayer(platform, inputValue, setResult);
       setLoading(false);
-      
+    }else{
+      setResult({});
     };
-  }, [inputValue,platform]);
+  }, [inputValue]);
 
   useEffect(() => {
     loadFonts();
@@ -110,16 +131,18 @@ export default function SearchScreen({ navigation, route }) {
                   </View>
                   {loading ? (
                     <View style={{ alignItems: 'center', marginTop: 75 }}>
-                      <ActivityIndicator size="small" color="#0000ff" />
-                    </View>) : result.status == "success" ? (
+                      <ActivityIndicator size="small" color="#fff" />
+                    </View>) 
+                      : result.status == "success" ? 
+                      (
                       <View style={{ alignItems: 'center', marginTop: 20 }}>
                         <Text style={{ color: '#DDDDDD', fontSize: 20, marginBottom: 15, fontFamily: 'BebasNeue' }}>Resultados:</Text>
 
                         <View style={{ width: anchoToltaCols, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 10 }}>
                           {result.data.map((item, index) => {
                             return (
-                              <TouchableOpacity onPress={() => { userPressed(item.username) }}>
-                                <View key={item.accountId} style={{ padding: 10, alignItems: 'center' }}>
+                              <TouchableOpacity key={item.accountId} onPress={() => { userPressed(item.username) }}>
+                                <View style={{ padding: 10, alignItems: 'center' }}>
                                   <View style={{ alignItems: 'center' }}>
                                     <Text style={{ color: '#2D2D2A', fontSize: 20, fontFamily: 'BebasNeue' }}>{item.username}</Text>
                                   </View>
