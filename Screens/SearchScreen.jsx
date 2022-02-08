@@ -30,7 +30,6 @@ export default function SearchScreen({ navigation, route }) {
     navigation.navigate('Profile');
     setResult('');
     setInputValue('');
-    console.log(user);
   };
 
   useEffect(() => { //controlamos el feedback de carga.
@@ -48,7 +47,6 @@ export default function SearchScreen({ navigation, route }) {
   const handleSubmit = (user) => {
     setSearchUser(user);
     setSearchPlatform(platform);
-    console.log(searchPlayer)
     navigation.navigate('Profile');
     setResult('');
     setInputValue('');
@@ -134,6 +132,7 @@ export default function SearchScreen({ navigation, route }) {
                       <ActivityIndicator size="small" color="#fff" />
                     </View>) 
                       : result.status == "success" ? 
+                         result.data.length > 0 ?
                       (
                       <View style={{ alignItems: 'center', marginTop: 20 }}>
                         <Text style={{ color: '#DDDDDD', fontSize: 20, marginBottom: 15, fontFamily: 'BebasNeue' }}>Resultados:</Text>
@@ -153,7 +152,13 @@ export default function SearchScreen({ navigation, route }) {
                         </View>
                       </View>
 
-                    ) : null}
+                    ):(
+                      <View style={{ alignItems: 'center', marginTop: 20 }}>
+                        <Text style={{ color: '#DDDDDD', fontSize: 20, marginBottom: 15, fontFamily: 'BebasNeue' }}>No se han encontrado resultados.</Text>
+                      </View>
+                    )
+                    
+                    : null}
 
                 </SafeAreaView>
 

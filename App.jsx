@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import * as Font from 'expo-font';
 import { UsuarioProvider,useUsuario } from './Context/usuarioContext';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MatchScreen from './Screens/MatchScreen.jsx';
 
 export default () => <UsuarioProvider><App/></UsuarioProvider>
 
@@ -25,6 +26,7 @@ function App() {
           <Stack.Screen name="Search" component={SearchScreen}/>
           <Stack.Screen name="Error" component={ErrorScreen} />
           <Stack.Screen name="Profile" component={ProfileScreen}/>
+          <Stack.Screen name="Match" component={MatchScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
    

@@ -1,65 +1,47 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { windowWidth, windowWidthCol, anchoToltaCols } from '../helpers/calcwWdth';
+import MatchScreen from '../Screens/MatchScreen';
 
 
-export default function MatchesData() {
+export default function MatchesData({navigation,userMatches}) {
+
+  
 
   return (
     <View style={{ justifyContent: 'center', width: windowWidth, alignItems: 'center' }}>
-      <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign: 'center', marginTop: 10, marginBottom: 20 }}> 22 de diciembre 2022</Text>
-      <TouchableOpacity>
-        <View style={{ width: anchoToltaCols, backgroundColor: '#44484A', borderRadius: 5, shadowColor: "#000", shadowOffset: { width: 0, height: 5, }, shadowOpacity: 0.34, shadowRadius: 6.27, elevation: 10, padding: 10 }}>
-          <View style={{flexDirection:'row', alignItems:'center', marginBottom:5}}>
-            <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'left',fontSize:12}}>BR DUOS </Text>
-            <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'left', fontSize:10}}>- 22 de diciembre 2022</Text>
-          </View>
-          <View style={{flexDirection:'row', alignItems:'center'}}>
-            <View style={{width:windowWidthCol}}>
-              <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:30}}>27º</Text>
+      {
+        userMatches.userMatch.data.matches.map((item, index) => {
+          return(
+            <TouchableOpacity key={item.matchID} style={{marginBottom:10}} onPress={() => navigation.navigate('Match')}>
+            <View style={{ width: anchoToltaCols, backgroundColor: '#44484A', borderRadius: 5, padding: 10, paddingBottom:12}}>
+              <View style={{flexDirection:'row', alignItems:'center', marginBottom:5}}>
+                <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'left',fontSize:12}}>{item.mode}</Text>
+                <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'left', fontSize:10}}> - {item.utcEndSeconds}</Text>
+              </View>
+              <View style={{flexDirection:'row', alignItems:'center'}}>
+                <View style={{width:windowWidthCol}}>
+                  <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:30}}>{item.playerStats.teamPlacement}º</Text>
+                </View>
+                <View style={{width:windowWidthCol, alignItems:'center',justifyContent:'center'}}>
+                  <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:20}}>{Math.round(item.playerStats.kdRatio * 100) / 100}</Text>
+                  <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'center', fontSize:10}}>KD</Text>
+                </View>
+                <View style={{width:windowWidthCol, alignItems:'center',justifyContent:'center'}}>
+                  <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:20}}>{item.playerStats.kills}</Text>
+                  <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'center', fontSize:10}}>Kills</Text>
+                </View>
+                <View style={{width:windowWidthCol, alignItems:'center',justifyContent:'center'}}>
+                  <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:20}}>{item.playerStats.deaths}</Text>
+                  <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'center', fontSize:10}}>Deaths</Text>
+                </View>
+              </View>
             </View>
-            <View style={{width:windowWidthCol, alignItems:'center',justifyContent:'center'}}>
-              <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:20}}>1.30</Text>
-              <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'center', fontSize:10}}>KD</Text>
-            </View>
-            <View style={{width:windowWidthCol, alignItems:'center',justifyContent:'center'}}>
-              <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:20}}>1.30</Text>
-              <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'center', fontSize:10}}>KD</Text>
-            </View>
-            <View style={{width:windowWidthCol, alignItems:'center',justifyContent:'center'}}>
-              <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:20}}>1.30</Text>
-              <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'center', fontSize:10}}>KD</Text>
-            </View>
-          </View>
-        </View>
-        
-      </TouchableOpacity>
-      <TouchableOpacity style={{marginTop:20}}>
-        <View style={{ width: anchoToltaCols, backgroundColor: '#44484A', borderRadius: 5, shadowColor: "#000", shadowOffset: { width: 0, height: 5, }, shadowOpacity: 0.34, shadowRadius: 6.27, elevation: 10, padding: 10 }}>
-          <View style={{flexDirection:'row', alignItems:'center', marginBottom:5}}>
-            <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'left',fontSize:12}}>BR DUOS </Text>
-            <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'left', fontSize:10}}>- 22 de diciembre 2022</Text>
-          </View>
-          <View style={{flexDirection:'row', alignItems:'center'}}>
-            <View style={{width:windowWidthCol}}>
-              <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:30}}>27º</Text>
-            </View>
-            <View style={{width:windowWidthCol, alignItems:'center',justifyContent:'center'}}>
-              <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:20}}>1.30</Text>
-              <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'center', fontSize:10}}>KD</Text>
-            </View>
-            <View style={{width:windowWidthCol, alignItems:'center',justifyContent:'center'}}>
-              <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:20}}>1.30</Text>
-              <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'center', fontSize:10}}>KD</Text>
-            </View>
-            <View style={{width:windowWidthCol, alignItems:'center',justifyContent:'center'}}>
-              <Text style={{ fontFamily: 'BebasNeue', color: 'white', textAlign:'center', fontSize:20}}>1.30</Text>
-              <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'center', fontSize:10}}>KD</Text>
-            </View>
-          </View>
-        </View>
-        
-      </TouchableOpacity>
+            
+          </TouchableOpacity>
+          )
+        })
+      }
     </View>
   );
 }

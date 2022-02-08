@@ -9,28 +9,28 @@ import {
     StackedBarChart
 } from "react-native-chart-kit";
 
-export default function ChartPie() {
+export default function ChartPie({userDataBrWeek}) {
+
+
   const chartConfig={
         backgroundColor: "#313638",
         backgroundGradientFrom: "#313638",
         backgroundGradientTo: "#313638",
         decimalPlaces: 0, // optional, defaults to 2dp
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-       
-        
       }
     const data = [
         {
           name: "Kills",
-          population: 140,
+          population: userDataBrWeek.kills,
           color: "rgba(0, 180, 216, 1)",
           legendFontColor: "#7F7F7F",
           legendFontSize: 15,
           
         },
         {
-          name: "Toronto",
-          population: 120,
+          name: "Deaths",
+          population: userDataBrWeek.deaths,
           color: "#DC3131",
           legendFontColor: "#7F7F7F",
           legendFontSize: 15

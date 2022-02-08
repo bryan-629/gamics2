@@ -26,7 +26,7 @@ export default function OverviewData({userData}) {
         <View >
             {fontLoaded ? (
                 <View style={{ alignItems: 'center' }}>
-                    <View style={{ marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ backgroundColor: '#00B4D8', height: 20, width: 20, borderRadius: 5, marginLeft: 5 }}></View>
                         <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 30, textAlign: 'center', marginLeft: 10, marginRight: 20 }}>{userData.data.userDataBrCal.userLeague}</Text>
                     </View>
@@ -53,28 +53,35 @@ export default function OverviewData({userData}) {
                             <Text style={{ color: 'grey', fontFamily: 'BebasNeue', fontSize: 17 }}>WEEK CHART</Text>
                         </View>
                     </View>
-                    <Chart userData={userData.data.periods}></Chart>
+                    {userData.data.periods.length > 0 ? (<Chart userData={userData.data.periods}></Chart>):(<Text>No data</Text>)}
+                    
                     <View style={{ width: anchoToltaCols, justifyContent: 'flex-start'}}>
                         <View style={{ width: windowWidthCol }}>
                             <Text style={{ color: 'grey', fontFamily: 'BebasNeue', fontSize: 17 }}>WEEK KD</Text>
                         </View>
                     </View>
+                    {userData.data.userDataBrWeek ?(
+                    <>
                     <View style={{ width: anchoToltaCols, marginTop: 20, justifyContent: 'space-between', flexDirection: 'row' }}>
                         <View style={{ width: windowWidthCol, justifyContent: 'center' }}>
-                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>1.50</Text>
+                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>{Math.round(userData.data.userDataBrWeek.kdRatio * 100) / 100}</Text>
                             <Text style={{ color: 'white', fontFamily: 'Mon', fontSize: 12, textAlign: 'center' }}>KD</Text>
                         </View>
                         <View style={{ width: windowWidthCol, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>1200</Text>
+                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>{userData.data.userDataBrWeek.kills}</Text>
                             <Text style={{ color: 'white', fontFamily: 'Mon', fontSize: 12, textAlign: 'center' }}>Kills</Text>
                         </View>
                         <View style={{ width: windowWidthCol, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>1000</Text>
+                            <Text style={{ color: 'white', fontFamily: 'BebasNeue', fontSize: 20, textAlign: 'center' }}>{userData.data.userDataBrWeek.deaths}</Text>
                             <Text style={{ color: 'white', fontFamily: 'Mon', fontSize: 12, textAlign: 'center' }}>Deaths</Text>
                         </View>
                         
                     </View>
-                    <ChartPie />
+                        <ChartPie userDataBrWeek={userData.data.userDataBrWeek}/>
+                    </>
+                    
+                    
+                    ) : (<Text>No data</Text>)}
                     <TouchableOpacity style={{padding:10,width:anchoToltaCols/2, backgroundColor:'#00B4D8',marginTop:25,justifyContent:'center',alignItems:'center',marginBottom:35, borderRadius:10}}>
                         <View style={{justifyContent:'center', alignItems:'center'}}>
                             <Text style={{fontFamily: 'BebasNeue', fontSize:17, color:'#44484A'}}>Ver todas las estadisticas</Text>

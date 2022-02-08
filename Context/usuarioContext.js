@@ -8,12 +8,16 @@ export function UsuarioProvider(props) {
     const [searchPlatform, setSearchPlatform] = useState('psn');
     const [favUser, setFavUser] = useState('');
     const [favPlatform, setFavPlatform] = useState('');
-  
 
+
+
+    const getPartidasUser = (platform,userId, setfunctionState) => {
+      //console.log(`https://codwz.000webhostapp.com/gamicsBack/Partidas.php?platform=${platform}&user=${parseUserAlmo(userId)}`);
+      fetch(`https://codwz.000webhostapp.com/gamicsBack/Partidas.php?platform=${platform}&user=${parseUserAlmo(userId)}`, { method: 'GET' }).then((res) => res.json()).then((data) => { setfunctionState(data) })
+    }
     const searchPlayer = (platform,userId, functionState) => { //Busca el litado de usuarios con auto completado segun el nombre ingresado
       try{
         if (userId=='') {
-          
         }else{
           
           //console.log(`https://codwz.000webhostapp.com/gamicsBack/search.php/?platform=${platform}&query=${parseUserAlmo(userId)}`);
@@ -24,13 +28,15 @@ export function UsuarioProvider(props) {
         
       };
     };
-
     const playerStats = (platform, userId, setfunctionState) => { //Busca los stats de un usuario
       let dataTime = getWeekTime() 
       user = parseUserAlmo(userId);
-      //console.log(`https://codwz.000webhostapp.com/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`);
+      console.log(`https://codwz.000webhostapp.com/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`);
       fetch(`https://codwz.000webhostapp.com/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`,{ method: 'GET' }).then((res) => res.json()).then((data) => { setfunctionState(data) })
     }
+
+
+
 
     const parseUserAlmo = (user) => {// parsea el usuario y cambia el # por %23
       if (user.includes('#')) {
@@ -53,8 +59,6 @@ export function UsuarioProvider(props) {
       return dateArray;
     }
 
- 
-
   const value = React.useMemo(() => {
     return ({
         searchUser,
@@ -66,7 +70,8 @@ export function UsuarioProvider(props) {
         favPlatform,
         setFavPlatform,
         searchPlayer,
-        playerStats
+        playerStats,
+        getPartidasUser
     })
   }, [searchPlatform, searchUser])
 

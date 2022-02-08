@@ -1,12 +1,13 @@
-import { StyleSheet, Text, View, SafeAreaView,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView,TouchableOpacity, Image} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import * as Font from 'expo-font';
 import {windowWidth,windowWidthCol,anchoToltaCols} from '../helpers/calcwWdth';
 import { color } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
+import {getName, getNameId} from '../helpers/namesGestion';
+import Logo from '../assets/Logo.png'
+import { Ionicons } from '@expo/vector-icons';
 
-
-
-export default function HeaderProfile({userData}) {
+export default function HeaderProfile({navigation, userData}) {
 
 
     const [fontLoaded, setFontLoaded] = useState(false);
@@ -27,16 +28,21 @@ export default function HeaderProfile({userData}) {
         <View style={styles.container}>
             {fontLoaded ? (
                 <SafeAreaView style={{ alignItems: 'center',flex:1 }}>
+                    <View style={{width:anchoToltaCols, alignItems:'flex-end'}}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+                            <Ionicons name="md-search" size={24} color="white" />
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.imgRadius}>
-
+                        <Image source={Logo} style={{width:43, height:35}}></Image>
                     </View>
                     <View style={{}}>
                         <View style={{justifyContent:'center', flexDirection:'row', alignItems:'center'}}>
-                            <Text style={{ fontFamily: 'BebasNeue', color: 'white', fontSize: 20, justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>{userData.data.userName}</Text>
+                            <Text style={{ fontFamily: 'BebasNeue', color: 'white', fontSize: 20, justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>{getName(userData.data.userName)}</Text>
                             <View style={{backgroundColor:'#00B4D8', height:20,width:20, borderRadius:5, marginLeft:5}}></View>
                         </View>
                         <View>
-                            <Text style={{ fontFamily: 'Mon', color: 'white', fontSize: 13, textAlign:'center'}}>#3927000</Text>
+                            <Text style={{ fontFamily: 'Mon', color: 'white', fontSize: 13, textAlign:'center'}}>{getNameId(userData.data.userName)}</Text>
                         </View>    
                     </View>
                     <View style={{height:40, width:anchoToltaCols/2,flexDirection:'row', marginTop:20,justifyContent:'space-between' }}>
@@ -79,11 +85,20 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     imgRadius: {
-        backgroundColor: '#ADB8B9',
+        backgroundColor:'#313638',
+        borderColor: 'transparent',
+        borderWidth: 1,
         borderRadius: 50,
         height: 80,
         width: 80,
-        marginTop: 20,
-        marginBottom:10
+        
+        marginBottom:10,
+        shadowColor: "#000",
+        shadowOffset: {width: 0,height: 5},
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10,
+        justifyContent:'center',
+        alignItems:'center'
     },
 });

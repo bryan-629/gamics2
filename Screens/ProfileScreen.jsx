@@ -11,11 +11,12 @@ import { useUsuario } from '../Context/usuarioContext';
 import createPerformanceLogger from 'react-native/Libraries/Utilities/createPerformanceLogger';
 
 
-export default function ProfileScreen() {
+export default function ProfileScreen({navigation}) {
   const [menu, setMenu] = useState(1);
   const [fontLoaded, setFontLoaded] = useState(false);
   const [userData, setUserData] = useState(null);
-  const { searchPlatform, setSearchPlatform, searchPlayer, setSearchUser, searchUser, playerStats } = useUsuario();
+  const [userMatches, setUserMatches] = useState(null);
+  const { searchPlatform, setSearchPlatform, searchPlayer, setSearchUser, searchUser, playerStats,getPartidasUser } = useUsuario();
   const [loading, setLoading] = useState(false);
 
 
@@ -30,8 +31,8 @@ export default function ProfileScreen() {
   useEffect(() => {
     loadFonts();
     if (!userData) {
-      console.log('se realiza petición')
       playerStats(searchPlatform, searchUser, setUserData);
+      getPartidasUser(searchPlatform,searchUser,setUserMatches);
     }
   }, []);
   useEffect(() => {
@@ -41,17 +42,17 @@ export default function ProfileScreen() {
   return (
 
     <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: '#313638' }}>
-      <ScrollView>
+      <ScrollView bounces={false}>
 
 
         {fontLoaded ? 
         
-        userData != null ? 
+        userData != null && userMatches != null? 
         (
             <>
-            <HeaderProfile userData={userData} />
+            <HeaderProfile userData={userData} navigation={navigation}/>
             <View style={{ width: windowWidth, justifyContent: 'center' }}>
-              <View >
+              <View style={{marginBottom:20}}>
                 <ScrollingButtonMenu
                   items={[
                     {
@@ -86,8 +87,8 @@ export default function ProfileScreen() {
                 />
               </View>
               {menu == 1 ? (<OverviewData userData={userData}/>) : null}
-              {menu == 2 ? (<MatchesData />) : null}
-              {menu == 3 ? (<StatsData />) : null}
+              {menu == 2 ? (<MatchesData userMatches={userMatches} navigation= {navigation} />) : null}
+              {menu == 3 ? (<StatsData userData={userData} />) : null}
             </View>
           </>
           ) : (
@@ -97,7 +98,7 @@ export default function ProfileScreen() {
           )
         : 
         (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text style={{ color: 'white' }}>Loading...</Text>
         </View>
         )}
