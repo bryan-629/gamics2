@@ -13,7 +13,7 @@ export default function MatchesData({navigation,userMatches}) {
       {
         userMatches.userMatch.data.matches.map((item, index) => {
           return(
-            <TouchableOpacity key={item.matchID} style={{marginBottom:10}} onPress={() => navigation.navigate('Match')}>
+            <TouchableOpacity key={item.matchID} style={{marginBottom:10}} onPress={() => navigation.navigate('Match',{'matchId': item.matchID })}>
             <View style={{ width: anchoToltaCols, backgroundColor: '#44484A', borderRadius: 5, padding: 10, paddingBottom:12}}>
               <View style={{flexDirection:'row', alignItems:'center', marginBottom:5}}>
                 <Text style={{ fontFamily: 'Mon', color: 'white', textAlign:'left',fontSize:12}}>{item.mode}</Text>

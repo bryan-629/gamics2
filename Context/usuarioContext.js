@@ -35,6 +35,11 @@ export function UsuarioProvider(props) {
       fetch(`https://codwz.000webhostapp.com/gamicsBack/UserData.php?platform=${platform}&user=${user}&periods[]=${dataTime[0]}&periods[]=${dataTime[1]}&periods[]=${dataTime[2]}&periods[]=${dataTime[3]}&periods[]=${dataTime[4]}&periods[]=${dataTime[5]}&periods[]=${dataTime[6]}`,{ method: 'GET' }).then((res) => res.json()).then((data) => { setfunctionState(data) })
     }
 
+    const getMatchDetails = ( match, userId,setfunctionState) => {
+      console.log(`https://codwz.000webhostapp.com/gamicsBack/Match.php?MatchId=${match}&userId=${parseUserAlmo(userId)}`)
+      fetch(`https://codwz.000webhostapp.com/gamicsBack/Match.php?MatchId=${match}&userId=${parseUserAlmo(userId)}`, { method: 'GET' }).then((res) => res.json()).then((data) => { setfunctionState(data) })
+    };
+
 
 
 
@@ -71,7 +76,8 @@ export function UsuarioProvider(props) {
         setFavPlatform,
         searchPlayer,
         playerStats,
-        getPartidasUser
+        getPartidasUser,
+        getMatchDetails
     })
   }, [searchPlatform, searchUser])
 

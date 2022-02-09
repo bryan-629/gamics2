@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#313638"
-      }
+      },
+      "package": "com.gamics"
     },
     "web": {
       "favicon": "./assets/favicon.png"

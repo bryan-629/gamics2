@@ -140,7 +140,7 @@ export default function SearchScreen({ navigation, route }) {
                         <View style={{ width: anchoToltaCols, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 10 }}>
                           {result.data.map((item, index) => {
                             return (
-                              <TouchableOpacity key={item.accountId} onPress={() => { userPressed(item.username) }}>
+                              <TouchableOpacity key={item.accountId} >
                                 <View style={{ padding: 10, alignItems: 'center' }}>
                                   <View style={{ alignItems: 'center' }}>
                                     <Text style={{ color: '#2D2D2A', fontSize: 20, fontFamily: 'BebasNeue' }}>{item.username}</Text>
