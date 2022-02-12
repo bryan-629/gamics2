@@ -60,7 +60,7 @@ export default function OverviewData({userData}) {
                             <Text style={{ color: 'grey', fontFamily: 'BebasNeue', fontSize: 17 }}>WEEK KD</Text>
                         </View>
                     </View>
-                    {userData.data.userDataBrWeek ?(
+                    {userData.data.userDataBrWeek.kdRatio ?(
                     <>
                     <View style={{ width: anchoToltaCols, marginTop: 20, justifyContent: 'space-between', flexDirection: 'row' }}>
                         <View style={{ width: windowWidthCol, justifyContent: 'center' }}>

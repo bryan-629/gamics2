@@ -95,7 +95,7 @@ export default function Chart({userData}) {
                           fill="white"
                           fontSize="12"
                           fontWeight="bold"
-                          textAnchor="left">
+                          >
                           {`KD: ${tooltipPos.kdValue}`}
                       </TextSVG>
                       <Rect x={tooltipPos.index == 6? tooltipPos.x - 65 : tooltipPos.x -15} 
@@ -109,7 +109,7 @@ export default function Chart({userData}) {
                           fill="white"
                           fontSize="12"
                           fontWeight="bold"
-                          textAnchor="left">
+                          >
                           {`Kills: ${tooltipPos.killsValue}`}
                       </TextSVG>
                       <Rect x={tooltipPos.index == 6? tooltipPos.x - 65 : tooltipPos.x -15} 
@@ -123,15 +123,14 @@ export default function Chart({userData}) {
                           y={150}
                           fill="white"
                           fontSize="12"
-                          fontWeight="bold"
-                          textAnchor="left">
+                          fontWeight="bold">
                           {`Deaths: ${tooltipPos.deathsValue}`}
                       </TextSVG>
               </Svg>
           </View> : null
       }}
       onDataPointClick={(data) => {
-
+        
         let isSamePoint = (tooltipPos.x === data.x && tooltipPos.y === data.y)
         isSamePoint ? setTooltipPos((previousState) => {
             return { 
@@ -141,8 +140,8 @@ export default function Chart({userData}) {
                 }
         })
             : 
+            
         setTooltipPos({ x: data.x, killsValue: dataKills[data.index], deathsValue: dataDeaths[data.index] ,kdValue: dataDeaths[data.index] != 0 ? (Math.round(dataKills[data.index]/ dataDeaths[data.index]*100)/100): (0) , y: data.y, visible: true,index: data.index });
-
     }}
         bezier
         style={{

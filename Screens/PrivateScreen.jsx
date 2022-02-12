@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View,SafeAreaView,TouchableOpacity,Image } from 'react-native'
+import React, {useState,useEffect} from 'react'
 import * as Font from 'expo-font';
 import Logo from '../assets/Logo.png';
 
-export default function ErrorScreen({navigation}) {
+export default function PrivateScreen({navigation}) {
 
     const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -18,10 +18,8 @@ export default function ErrorScreen({navigation}) {
     useEffect(() => {
         loadFonts();
     }, []);
-
-    return (
-
-        <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#313638' }}>
+  return (
+    <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#313638' }}>
             <SafeAreaView>
                 {fontLoaded ? (
                     <>
@@ -29,7 +27,7 @@ export default function ErrorScreen({navigation}) {
                             <Image source={Logo} style={{ width: 64, height: 52 }} />
                         </View>
                         <Text style={{ color: 'white', fontFamily: 'BebasNeue', textAlign: 'center', fontSize: 40, marginBottom: 10 }}>Oh no!</Text>
-                        <Text style={{ color: 'white', fontFamily: 'BebasNeue', textAlign: 'center', fontSize: 20 }}>algo no ha ido bien...</Text>
+                        <Text style={{ color: 'white', fontFamily: 'BebasNeue', textAlign: 'center', fontSize: 20 }}>Este perfil es privado</Text>
                         <View>
                             <TouchableOpacity onPress={() => { navigation.navigate('Search')}} >
                                 <View style={{ width: 270, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ADB8B9', borderRadius: 3, marginTop: 10, padding: 10 }}>
@@ -46,8 +44,7 @@ export default function ErrorScreen({navigation}) {
                 }
             </SafeAreaView>
         </View>
-
-    )
+  )
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({})

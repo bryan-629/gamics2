@@ -9,6 +9,7 @@ import StatsData from '../Components/StatsData';
 import { windowWidth, windowWidthCol , anchoToltaCols } from '../helpers/calcwWdth';
 import { useUsuario } from '../Context/usuarioContext';
 import createPerformanceLogger from 'react-native/Libraries/Utilities/createPerformanceLogger';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function ProfileScreen({navigation}) {
@@ -35,22 +36,22 @@ export default function ProfileScreen({navigation}) {
       getPartidasUser(searchPlatform,searchUser,setUserMatches);
     }
   }, []);
-  useEffect(() => {
 
-  }, [userData]);
 
   return (
 
-    <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: '#313638' }}>
-      <ScrollView bounces={false}>
-
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#313638' }}>
+      
+      
 
         {fontLoaded ? 
         
         userData != null && userMatches != null? 
-        (
-            <>
+        userData.status == "success"? (
+          <ScrollView bounces={false}>
+          
             <HeaderProfile userData={userData} navigation={navigation}/>
+            
             <View style={{ width: windowWidth, justifyContent: 'center' }}>
               <View style={{marginBottom:20}}>
                 <ScrollingButtonMenu
@@ -90,23 +91,25 @@ export default function ProfileScreen({navigation}) {
               {menu == 2 ? (<MatchesData userMatches={userMatches} navigation= {navigation} />) : null}
               {menu == 3 ? (<StatsData userData={userData} />) : null}
             </View>
-          </>
-          ) : (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red', width:100}}>
-            <Text style={{ color: 'white' }}>Loading...</Text>
+
+        </ScrollView>
+          ) : (userData.mensaje == "Not permitted: not allowed"? navigation.navigate('Private') : navigation.navigate('Error') )
+         : (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width:100}}>
+            <ActivityIndicator size="small" color="white" />
           </View>
           )
         : 
         (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{ color: 'white' }}>Loading...</Text>
+          <ActivityIndicator size="small" color="white" />
         </View>
         )}
 
 
 
 
-      </ScrollView>
+      
     </View>
 
   );

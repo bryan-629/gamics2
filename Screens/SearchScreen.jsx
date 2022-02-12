@@ -8,22 +8,39 @@ import { windowWidth, windowWidthCol, anchoToltaCols } from '../helpers/calcwWdt
 import { useUsuario } from '../Context/usuarioContext';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function SearchScreen({ navigation, route }) {
-  const { searchPlatform, setSearchPlatform, searchPlayer, setSearchUser, searchUser } = useUsuario();
+
+  const { searchPlatform, setSearchPlatform, searchPlayer, setSearchUser, searchUser,favUser,favPlatform } = useUsuario();
   const [fontLoaded, setFontLoaded] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState({});
   const [platform, setPlatform] = useState('psn')
 
-  const loadFonts = async () => {
+  const loadFonts = async () => 
+  {
     await Font.loadAsync({
       'BebasNeue': require('../assets/font/BebasNeue-Regular.ttf'),
       'Mon': require('../assets/font/Montserrat-VariableFont_wght.ttf'),
     });
-    setFontLoaded(true);
+    const userFavSavedId = await AsyncStorage.getItem('UserId');
+    const userFavSavedPlatform = await AsyncStorage.getItem('Platform');
+    console.log('user fav :' +userFavSavedId)
+    console.log('user fav :' +userFavSavedPlatform)
+    if (userFavSavedId && userFavSavedPlatform ) {
+      setSearchPlatform(userFavSavedPlatform);
+      setSearchUser(userFavSavedId);
+      navigation.navigate('Profile');
+    };
+    setTimeout(() =>{
+      setFontLoaded(true);
+    },500)
   };
+
+
   const userPressed = (user) => {
     setSearchUser(user);
     setSearchPlatform(platform)
@@ -31,6 +48,7 @@ export default function SearchScreen({ navigation, route }) {
     setResult('');
     setInputValue('');
   };
+
 
   useEffect(() => { //controlamos el feedback de carga.
     if (inputValue != '') { //si hay valor en el input, se manda la peticiion, con lo cual, cargamos
@@ -52,9 +70,9 @@ export default function SearchScreen({ navigation, route }) {
     setInputValue('');
   };
 
+
   useEffect(() => {
     if (inputValue != '') {
-      
       searchPlayer(platform, inputValue, setResult);
       setLoading(false);
     };
@@ -83,17 +101,12 @@ export default function SearchScreen({ navigation, route }) {
           {fontLoaded ? (
             <>
               <View style={{ flex: 1 }}>
-
                 <SafeAreaView>
-
-
                   <View style={{ alignItems: "center", marginTop: 85 }}>
                     <View style={styles.logo}>
                       <Image style={{ height: 80, width: 100, resizeMode: 'stretch', marginBottom: 20 }} source={Logo}></Image>
                     </View>
                   </View>
-
-
                   <View style={{ alignItems: 'center', marginTop: 75 }}>
                     <Text style={{ color: '#DDDDDD', fontSize: 20, marginBottom: 15, fontFamily: 'BebasNeue' }}>
                       Introduce el usuario y su plataforma
@@ -120,7 +133,7 @@ export default function SearchScreen({ navigation, route }) {
                     />
 
 
-                    <TouchableOpacity onPress={() => { handleSubmit(inputValue) }}>
+                    <TouchableOpacity >
                       <View
                         style={{ padding: 10, width: anchoToltaCols, backgroundColor: '#00B4D8', borderRadius: 3, marginTop: 10 }}>
                         <Text style={{ textAlign: 'center', color: "#2D2D2A", fontSize: 25, fontFamily: 'BebasNeue' }}>SEARCH</Text>
@@ -140,7 +153,7 @@ export default function SearchScreen({ navigation, route }) {
                         <View style={{ width: anchoToltaCols, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 10 }}>
                           {result.data.map((item, index) => {
                             return (
-                              <TouchableOpacity key={item.accountId} >
+                              <TouchableOpacity key={item.accountId} onPress={() => { userPressed(item.username) }}>
                                 <View style={{ padding: 10, alignItems: 'center' }}>
                                   <View style={{ alignItems: 'center' }}>
                                     <Text style={{ color: '#2D2D2A', fontSize: 20, fontFamily: 'BebasNeue' }}>{item.username}</Text>
@@ -165,7 +178,7 @@ export default function SearchScreen({ navigation, route }) {
               </View>
             </>) : (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#313638' }}>
-              <Text style={{ color: 'white' }}>Loading...</Text>
+              <ActivityIndicator size="small" color="white" />
             </View>)}
         </View>
       </TouchableWithoutFeedback>

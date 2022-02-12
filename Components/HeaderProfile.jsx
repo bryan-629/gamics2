@@ -6,12 +6,34 @@ import { color } from 'react-native/Libraries/Components/View/ReactNativeStyleAt
 import {getName, getNameId} from '../helpers/namesGestion';
 import Logo from '../assets/Logo.png'
 import { Ionicons } from '@expo/vector-icons';
+import { useUsuario } from '../Context/usuarioContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HeaderProfile({navigation, userData}) {
 
 
     const [fontLoaded, setFontLoaded] = useState(false);
+    const {searchPlatform, setSearchPlatform, searchPlayer, setSearchUser, searchUser,favUser,favPlatform,setFavPlatform,setFavUser } = useUsuario();
+    const [thisProfileIsFav, setThisProfileIsFav] = useState(true)
+    const [favExist, setFavExist] = useState(true)//control para mostrar el boton de go back o delete profile
 
+    useEffect(() => {
+        console.log('onmount')
+        console.log(favUser)
+        if (favUser) {
+            setFavExist(true)
+            
+        }else{
+            setFavExist(false)
+        }
+        if (searchUser == favUser) {
+            setThisProfileIsFav(true)
+        }else{
+            setThisProfileIsFav(false);
+        }
+      },[]);
+
+  
     const loadFonts = async () => {
         await Font.loadAsync({
             'BebasNeue': require('../assets/font/BebasNeue-Regular.ttf'),
@@ -23,12 +45,32 @@ export default function HeaderProfile({navigation, userData}) {
     useEffect(() => {
         loadFonts();
     }, []);
+    
+    const saveProfileAsFav = async () =>{
+      setFavExist(true);
+      setThisProfileIsFav(true);
+      const userFavSavedId = await AsyncStorage.setItem('UserId', searchUser );
+      const userFavSavedPlatform =  await AsyncStorage.setItem('Platform', searchPlatform );
+      setFavPlatform(userFavSavedPlatform);
+      setFavUser(userFavSavedId);
+      console.log('saved');
+    };
+    const deleteSavedProfile = async () => {
+        setFavExist(false);
+        setThisProfileIsFav(false);
+        await AsyncStorage.removeItem('UserId' );
+        await AsyncStorage.removeItem('Platform' );
+        setFavPlatform('');
+        setFavUser('');
+        console.log('removed');
+    };
 
     return (
         <View style={styles.container}>
+            <SafeAreaView style={{ alignItems: 'center'}}>
             {fontLoaded ? (
-                <SafeAreaView style={{ alignItems: 'center',flex:1 }}>
-                    <View style={{width:anchoToltaCols, alignItems:'flex-end'}}>
+                <>
+                    <View style={{width:anchoToltaCols, alignItems:'flex-end', marginTop:3}}>
                         <TouchableOpacity onPress={() => navigation.navigate('Search')}>
                             <Ionicons name="md-search" size={24} color="white" />
                         </TouchableOpacity>
@@ -55,26 +97,48 @@ export default function HeaderProfile({navigation, userData}) {
                             <Text style={{ fontFamily: 'Mon', color: 'white', fontSize: 13, textAlign:'center'}}>Prestige</Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={{padding:10,width:anchoToltaCols/2, backgroundColor:'#00B4D8',marginTop:25,justifyContent:'center',alignItems:'center', borderRadius:10, shadowColor: "#000",shadowOffset: {width: 0,height: 5,},shadowOpacity: 0.34,shadowRadius: 6.27,elevation: 10}}>
+                    {favExist?
+                        thisProfileIsFav?(
+                            <TouchableOpacity onPress={() => deleteSavedProfile()} style={{padding:10,width:anchoToltaCols/2, backgroundColor:'#00B4D8',marginTop:25,justifyContent:'center',alignItems:'center', borderRadius:10, shadowColor: "#000",shadowOffset: {width: 0,height: 5,},shadowOpacity: 0.34,shadowRadius: 6.27,elevation: 10}}>
+                                <View style={{justifyContent:'center', alignItems:'center'}}>
+                                    <Text style={{fontFamily: 'BebasNeue', fontSize:17, color:'#44484A'}}>Delete</Text>
+                                </View>
+                            </TouchableOpacity>
+                        )
+                        :
+                        (   <TouchableOpacity style={{padding:10,width:anchoToltaCols/2, backgroundColor:'#00B4D8',marginTop:25,justifyContent:'center',alignItems:'center', borderRadius:10, shadowColor: "#000",shadowOffset: {width: 0,height: 5,},shadowOpacity: 0.34,shadowRadius: 6.27,elevation: 10}}>
+                                <View style={{justifyContent:'center', alignItems:'center'}}>
+                                    <Text style={{fontFamily: 'BebasNeue', fontSize:17, color:'#44484A'}}>Go back</Text>
+                                </View>
+                            </TouchableOpacity>)
+                    : 
+                    (
+                     <TouchableOpacity onPress={() => saveProfileAsFav() } style={{padding:10,width:anchoToltaCols/2, backgroundColor:'#00B4D8',marginTop:25,justifyContent:'center',alignItems:'center', borderRadius:10, shadowColor: "#000",shadowOffset: {width: 0,height: 5,},shadowOpacity: 0.34,shadowRadius: 6.27,elevation: 10}}>
                         <View style={{justifyContent:'center', alignItems:'center'}}>
                             <Text style={{fontFamily: 'BebasNeue', fontSize:17, color:'#44484A'}}>Set as your profile</Text>
                         </View>
-                    </TouchableOpacity>
-                </SafeAreaView>) : (<Text>Loading...</Text>)
+                     </TouchableOpacity>
+                    )
+                        
+                    }
+                    
+                </>
+                ) : (<Text>Loading...</Text>)
             }
-
+            </SafeAreaView>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: 355,
+        
         borderRadius: 5,
         width: windowWidth,
         backgroundColor: '#44484A',
         alignItems: 'center',
         shadowColor: "#000",
+        paddingVertical:30,
         shadowOffset: {
             width: 0,
             height: 5,
